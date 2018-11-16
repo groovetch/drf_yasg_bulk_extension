@@ -3,6 +3,7 @@ from setuptools import setup, find_packages
 requirements = [
     'drf_yasg',
     'setuptools',
+    'djangorestframework-bulk'
 ]
 
 setup(

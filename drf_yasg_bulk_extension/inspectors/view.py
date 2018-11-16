@@ -71,3 +71,19 @@ class SwaggerAutoSchema(BaseSwaggerAutoSchema):
                 default_schema = self.get_paginated_response(default_schema) or default_schema
 
         return OrderedDict({str(default_status): default_schema})
+
+    def should_filter(self):
+        """Determine whether filter backend parameters should be included for this request.
+
+        :rtype: bool
+        """
+        if not getattr(self.view, 'filter_backends', None):
+            return False
+
+        if getattr(self.view, 'action', '') in ('bulk_destroy',):
+            return False
+
+        if self.method.lower() not in ["get", "delete"]:
+            return False
+
+        return is_list_view(self.path, self.method, self.view)
